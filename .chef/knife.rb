@@ -1,9 +1,9 @@
 log_level                :info
 log_location             STDOUT
 node_name                'tatsuro'
-client_key               '/Users/tatsuro/.chef/tatsuro.pem'
+client_key               '~/.chef/tatsuro.pem'
 validation_client_name   'chef-validator'
 validation_key           '/etc/chef/validation.pem'
 chef_server_url          'http://fg-macbook-2.local:4000'
-syntax_check_cache_path  '/Users/tatsuro/.chef/syntax_check_cache'
-cookbook_path            ['/Users/tatsuro/repos/MyChefRepo/cookbooks']
+syntax_check_cache_path  '~/.chef/syntax_check_cache'
+cookbook_path            ['~/repos/MyChefRepo/cookbooks']
