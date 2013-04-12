@@ -9,7 +9,7 @@
 
 hadoop_metadata_dir = "/var/lib/hadoop-hdfs/cache/hdfs/dfs/name"
 hadoopfs_cmd = "hadoop fs"
-hdfs_system_cache = "/var/lib/hadoop-hdfs/cache"
+mapred_system_cache = "/var/lib/hadoop-hdfs/cache/mapred"
 sampleuser_home = "/user/sampleuser"
 sampleuser_name = "sampleuser"
 
@@ -31,14 +31,11 @@ service "hadoop-hdfs-datanode" do
 end
 
 execute "create_cache" do
-  command "#{hadoopfs_cmd} -mkdir -p #{hdfs_system_cache}"
-  user "hdfs"
-  group "hdfs"
-  notifies :run, "execute[chmod_cache]", :immediately
-end
-
-execute "chmod_cache" do
-  command "#{hadoopfs_cmd} -chmod -R 1777 #{hdfs_system_cache}"
+  command <<-EOH
+    #{hadoopfs_cmd} -mkdir -p #{mapred_system_cache}/mapred/staging
+    #{hadoopfs_cmd} -chmod 1777 #{mapred_system_cache}/mapred/staging
+    #{hadoopfs_cmd} -chown -R mapred #{mapred_system_cache}
+  EOH
   user "hdfs"
   group "hdfs"
 end
@@ -49,14 +46,10 @@ user "#{sampleuser_name}" do
 end
 
 execute "create_sampleuser_home" do
-  command "#{hadoopfs_cmd} -mkdir -p #{sampleuser_home}"
-  user "hdfs"
-  group "hdfs"
-  notifies :run, "execute[chown_sampleuser_home]", :immediately
-end
-
-execute "chown_sampleuser_home" do
-  command "#{hadoopfs_cmd} -chown #{sampleuser_name} #{sampleuser_home}"
+  command <<-EOH
+    #{hadoopfs_cmd} -mkdir -p #{sampleuser_home}
+    #{hadoopfs_cmd} -chown #{sampleuser_name} #{sampleuser_home}
+  EOH
   user "hdfs"
   group "hdfs"
 end
