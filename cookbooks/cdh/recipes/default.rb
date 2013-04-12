@@ -7,7 +7,6 @@
 # All rights reserved - Do Not Redistribute
 #
 
-
 cloudera_repo_base = "http://archive.cloudera.com/cdh4"
 gpg_key_package = "RPM-GPG-KEY-cloudera"
 cdh_package = "cloudera-cdh-4-0.x86_64.rpm"
@@ -38,9 +37,3 @@ yum_package "hadoop-0.20-conf-pseudo" do
   action :install
 end
 
-execute 'namenode_format' do
-  command 'hdfs namenode -format'
-  user 'hdfs'
-  group 'hdfs'
-  not_if {File.exists?('/var/lib/hadoop-hdfs/cache/hdfs/dfs/name')}
-end
