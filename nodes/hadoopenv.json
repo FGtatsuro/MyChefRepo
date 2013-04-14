@@ -1,0 +1,1 @@
+{"run_list":[  "recipe[os_base]",  "recipe[java]",  "recipe[cdh]",  "recipe[hdfs]",  "recipe[mapreduce]",  "recipe[pig]"    ]}
