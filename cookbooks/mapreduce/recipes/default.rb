@@ -13,5 +13,5 @@ service "hadoop-0.20-mapreduce-jobtracker" do
 end
 
 service "hadoop-0.20-mapreduce-tasktracker" do
-  action :start
+  action :nothing
 end

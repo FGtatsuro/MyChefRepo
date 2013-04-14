@@ -31,6 +31,7 @@ service "hadoop-hdfs-datanode" do
 end
 
 execute "create_cache" do
+  action :nothing
   command <<-EOH
     #{hadoopfs_cmd} -mkdir -p #{mapred_system_cache}/mapred/staging
     #{hadoopfs_cmd} -chmod 1777 #{mapred_system_cache}/mapred/staging
