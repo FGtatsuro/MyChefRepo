@@ -9,6 +9,7 @@
 
 yum_package "pig" do
   action :install
+  options "-y"
 end
 
 file "/home/vagrant/.pigbootup" do

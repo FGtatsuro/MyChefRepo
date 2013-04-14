@@ -35,5 +35,6 @@ end
 
 yum_package "hadoop-0.20-conf-pseudo" do
   action :install
+  options "-y"
 end
 
