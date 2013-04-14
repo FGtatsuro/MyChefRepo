@@ -10,6 +10,7 @@
 hadoop_metadata_dir = "/var/lib/hadoop-hdfs/cache/hdfs/dfs/name"
 hadoopfs_cmd = "hadoop fs"
 mapred_system_cache = "/var/lib/hadoop-hdfs/cache/mapred"
+mapred_staging_dir = "#{mapred_system_cache}/mapred/staging"
 sampleuser_home = "/user/sampleuser"
 sampleuser_name = "sampleuser"
 
@@ -33,8 +34,8 @@ end
 execute "create_cache" do
   action :nothing
   command <<-EOH
-    #{hadoopfs_cmd} -mkdir -p #{mapred_system_cache}/mapred/staging
-    #{hadoopfs_cmd} -chmod 1777 #{mapred_system_cache}/mapred/staging
+    #{hadoopfs_cmd} -mkdir -p #{mapred_staging_dir}
+    #{hadoopfs_cmd} -chmod -R 1777 #{mapred_staging_dir}
     #{hadoopfs_cmd} -chown -R mapred #{mapred_system_cache}
   EOH
   user "hdfs"
@@ -49,6 +50,15 @@ execute "create_sampleuser_home" do
   command <<-EOH
     #{hadoopfs_cmd} -mkdir -p #{sampleuser_home}
     #{hadoopfs_cmd} -chown #{sampleuser_name} #{sampleuser_home}
+  EOH
+  user "hdfs"
+  group "hdfs"
+end
+
+execute "chown_sampleuser_staging" do
+  command <<-EOH
+    #{hadoopfs_cmd} -mkdir -p #{mapred_staging_dir}/#{sampleuser_name}
+    #{hadoopfs_cmd} -chown -R #{sampleuser_name} #{mapred_staging_dir}/#{sampleuser_name}
   EOH
   user "hdfs"
   group "hdfs"
