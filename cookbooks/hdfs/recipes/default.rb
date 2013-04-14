@@ -42,7 +42,6 @@ end
 
 user "#{sampleuser_name}" do
   action :create
-  notifies :run, "execute[create_sampleuser_home]", :immediately
 end
 
 execute "create_sampleuser_home" do
