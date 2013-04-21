@@ -13,6 +13,7 @@ mapred_system_cache = "/var/lib/hadoop-hdfs/cache/mapred"
 mapred_staging_dir = "#{mapred_system_cache}/mapred/staging"
 sampleuser_home = "/user/sampleuser"
 sampleuser_name = "sampleuser"
+tmp_dir = "/tmp"
 
 execute "namenode_format" do
   command "hdfs namenode -format"
@@ -59,6 +60,15 @@ execute "chown_sampleuser_staging" do
   command <<-EOH
     #{hadoopfs_cmd} -mkdir -p #{mapred_staging_dir}/#{sampleuser_name}
     #{hadoopfs_cmd} -chown -R #{sampleuser_name} #{mapred_staging_dir}/#{sampleuser_name}
+  EOH
+  user "hdfs"
+  group "hdfs"
+end
+
+execute "create_tmp_dir" do
+  command <<-EOH
+    #{hadoopfs_cmd} -mkdir -p #{tmp_dir}
+    #{hadoopfs_cmd} -chmod -R 777 #{tmp_dir}
   EOH
   user "hdfs"
   group "hdfs"
