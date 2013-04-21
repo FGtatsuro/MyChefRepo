@@ -7,9 +7,21 @@
 # All rights reserved - Do Not Redistribute
 #
 
+hostname = "hadoopenv"
+
 execute "hostname" do
-  command "hostname hadoopenv"
+  command "hostname #{hostname}"
   user "root"
+end
+
+template "/etc/hosts" do
+  source "etc/hosts.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  variables(
+    :hostname => "#{hostname}"
+  )
 end
 
 yum_package "yum-plugin-fastestmirror" do
