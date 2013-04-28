@@ -11,7 +11,8 @@ hadoop_metadata_dir = "/var/lib/hadoop-hdfs/cache/hdfs/dfs/name"
 hadoopfs_cmd = "hadoop fs"
 mapred_system_cache = "/var/lib/hadoop-hdfs/cache/mapred"
 mapred_staging_dir = "#{mapred_system_cache}/mapred/staging"
-sampleuser_home = "/user/sampleuser"
+user_dir = "/user"
+sampleuser_home = "#{user_dir}/sampleuser"
 sampleuser_name = "sampleuser"
 tmp_dir = "/tmp"
 
@@ -45,6 +46,15 @@ end
 
 user "#{sampleuser_name}" do
   action :create
+end
+
+execute "create_user_dir" do
+  command <<-EOH
+    #{hadoopfs_cmd} -mkdir -p #{user_dir}
+    #{hadoopfs_cmd} -chmod -R 777 #{user_dir}
+  EOH
+  user "hdfs"
+  group "hdfs"
 end
 
 execute "create_sampleuser_home" do
