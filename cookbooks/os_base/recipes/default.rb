@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-hostname = "hadoopenv"
+hostname = node[:os_base][:hostname]
 
 execute "hostname" do
   command "hostname #{hostname}"
